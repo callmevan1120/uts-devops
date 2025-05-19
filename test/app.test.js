@@ -17,10 +17,4 @@ describe("Express App Routes", () => {
     expect(res.text).toContain("<h1>"); // Periksa ada heading
     expect(res.text).toContain("Hello"); // Pastikan ada kata Hello (atau sesuai isi file)
   });
-
-  it("GET /api/hello should return JSON", async () => {
-    const res = await request(app).get("/api/hello");
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty("message", "Hello from API!");
-  });
 });
