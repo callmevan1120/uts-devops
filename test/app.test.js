@@ -1,10 +1,26 @@
 const request = require("supertest");
 const app = require("../app");
+const path = require("path");
+const fs = require("fs");
 
-describe("GET /", () => {
-  it("should return Hello, CI/CD!", async () => {
+describe("Express App Routes", () => {
+  it("GET / should return index.html content", async () => {
     const res = await request(app).get("/");
-    expect(res.statusCode).toEqual(200);
-    expect(res.text).toBe("Hello, CI/CD!");
+    expect(res.statusCode).toBe(200);
+    expect(res.type).toBe("text/html");
+
+    // Opsional: validasi konten HTML
+    const html = fs.readFileSync(
+      path.join(__dirname, "../public/index.html"),
+      "utf8"
+    );
+    expect(res.text).toContain("<h1>"); // Periksa ada heading
+    expect(res.text).toContain("Hello"); // Pastikan ada kata Hello (atau sesuai isi file)
+  });
+
+  it("GET /api/hello should return JSON", async () => {
+    const res = await request(app).get("/api/hello");
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty("message", "Hello from API!");
   });
 });
